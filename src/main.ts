@@ -19,12 +19,13 @@ async function bootstrap() {
     },
   };
   app.connectMicroservice(microserviceOptions);
-  const PORT = configService.get<number>('PORT');
+  const CHANNEL = configService.get<number>('SUBSCRIBE_CHANNEL');
   const environment = configService.get<string>('NODE_ENV');
   const title = configService.get<string>('ENVIRONMENT_TITLE');
-  await app.listen(PORT);
-  logger.log(
-    `${environment}, Microservice ready to receive Redis messages in PORT - ${PORT}\n Environment - ${title}`,
-  );
+  app.startAllMicroservices(() => {
+    logger.log(
+      `${environment}, Microservice ready to receive Redis messages in - ${CHANNEL}\n Environment - ${title}`,
+    );
+  });
 }
 bootstrap();
